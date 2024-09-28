@@ -1,6 +1,6 @@
 !@@@LeafSwitchONLY
 config t
-   hostname COREbaba__
+   hostname COREbaba11
    enable secret pass
    service password-encryption
    no logging console
@@ -16,52 +16,52 @@ config t
    Int Gi 0/1
      no shutdown
 	  no switchport
-	  ip add 10.12.12.4 255.255.255.0
+	  ip add 10.11.11.4 255.255.255.0
    Int Vlan 1
      no shutdown
-	 ip add 10.12.1.4 255.255.255.0
+	 ip add 10.11.1.4 255.255.255.0
 	 description MGMTDATA
    Int Vlan 10
      no shutdown
-	 ip add 10.12.10.4 255.255.255.0
+	 ip add 10.11.10.4 255.255.255.0
 	 description WIRELESS
    Int Vlan 50
      no shutdown
-	 ip add 10.12.50.4 255.255.255.0
+	 ip add 10.11.50.4 255.255.255.0
 	 description IPCCTV
    Int Vlan 100
      no shutdown
-	 ip add 10.12.100.4 255.255.255.0
+	 ip add 10.11.100.4 255.255.255.0
 	 description VOICEVLAN
 	 
 !DHCP: DYNAMIC HOST CONFIGURATION PROTOCOL
 !@@@LEAF SWITCH
 config t
-ip dhcp Excluded-add 10.12.1.1 10.12.1.100
-ip dhcp Excluded-add 10.12.10.1 10.12.10.100
-ip dhcp Excluded-add 10.12.50.1 10.12.50.100
-ip dhcp Excluded-add 10.12.100.1 10.12.100.100
+ip dhcp Excluded-add 10.11.1.1 10.11.1.100
+ip dhcp Excluded-add 10.11.10.1 10.11.10.100
+ip dhcp Excluded-add 10.11.50.1 10.11.50.100
+ip dhcp Excluded-add 10.11.100.1 10.11.100.100
 ip dhcp pool MGMTDATA
-   network 10.12.1.0 255.255.255.0
-   default-router 10.12.1.4
+   network 10.11.1.0 255.255.255.0
+   default-router 10.11.1.4
    domain-name MGMTDATA.COM
-   dns-server 10.12.1.10
+   dns-server 10.11.1.10
 ip dhcp pool WIFIDATA
-   network 10.12.10.0 255.255.255.0
-   default-router 10.12.10.4
+   network 10.11.10.0 255.255.255.0
+   default-router 10.11.10.4
    domain-name WIFIDATA.COM
-   dns-server 10.12.1.10
+   dns-server 10.11.1.10
 ip dhcp pool IPCCTV
-   network 10.12.50.0 255.255.255.0
-   default-router 10.12.50.4
+   network 10.11.50.0 255.255.255.0
+   default-router 10.11.50.4
    domain-name IPCCTV.COM
-   dns-server 10.12.1.10
+   dns-server 10.11.1.10
 ip dhcp pool VOICEVLAN
-   network 10.12.100.0 255.255.255.0
-   default-router 10.12.100.4
+   network 10.11.100.0 255.255.255.0
+   default-router 10.11.100.4
    domain-name VOICEVLAN.COM
-   dns-server 10.12.1.10
-   option 150 ip 10.12.100.8   
+   dns-server 10.11.1.10
+   option 150 ip 10.11.100.8   
    END
 
 !!CREATING AND PLACING PORTS INSIDEAVLAN:
@@ -113,22 +113,22 @@ config t
       exec-timeout 0 0
    Int Fa 0/0
      no shutdown
-	 ip add 10._.100.8 255.255.255.0 
+	 ip add 10.11.100.8 255.255.255.0 
 	 end
    
 !!!CUCM ANALOG PHONES CONFIG
 configure terminal
 dial-peer voice 1 pots
-   destination-pattern _00
+   destination-pattern 1100
    port 0/0/0
 dial-peer voice 2 pots
-   destination-pattern _01
+   destination-pattern 1101
    port 0/0/1
 dial-peer voice 3 pots
-   destination-pattern _02
+   destination-pattern 1102
    port 0/0/2
 dial-peer voice 4 pots
-   destination-pattern _03
+   destination-pattern 1103
    port 0/0/3
 end
 
@@ -143,28 +143,28 @@ telephony-service
    ip source-address 10._.100.8 port 2000
    create cnf-files
 ephone-dn 1
-  number _11
+  number 1111
 ephone-dn 2
-  number _22
+  number 1122
 ephone-dn 3
-  number _33
+  number 1133
 ephone-dn 4
-  number _44
+  number 1144
 ephone-dn 5
-  number _55
+  number 1155
 ephone-dn 6
-  number _66
+  number 1166
 ephone-dn 7
-  number _77
+  number 1177
 ephone-dn 8
-  number _88	
+  number 1188	
 Ephone 1
-  Mac-address ____.____.____
+  Mac-address CCD8.C1FB.09FF
   type 8945
   button 1:1 2:3 3:2 4:4
   restart
 Ephone 2
-  Mac-address ____.____.____
+  Mac-address CCD8.C1FB.0817
   type 8945
   button 1:5 2:6 3:7 4:8
   restart  
@@ -192,14 +192,14 @@ ipv4 0.0.0.0 0.0.0.0
 exit
 
 configure terminal
- dial-peer voice 11 Voip
- destination-pattern 11..
- session target ipv4:10.11.100.8
+! dial-peer voice 11 Voip
+! destination-pattern 11..
+ ! session target ipv4:10.11.100.8
+ ! codec g711ULAW
+ dial-peer voice 12 Voip
+ destination-pattern 12..
+ session target ipv4:10.12.100.8
  codec g711ULAW
-!dial-peer voice 12 Voip
-! destination-pattern 12..
-! session target ipv4:10.12.100.8
-! codec g711ULAW
 dial-peer voice 21 Voip
  destination-pattern 21..
  session target ipv4:10.21.100.8
@@ -248,7 +248,7 @@ dial-peer voice 71 Voip
 @@@@@@
 !@@@EDGE ROUTE CONFIG
 config t
-   hostname EDGE-12
+   hostname EDGE-11
    enable secret pass
    service password-encryption
    no logging console
@@ -263,20 +263,20 @@ config t
       exec-timeout 0 0
    Int Gi 0/0/0
      description INSIDE
-     ip add 10._._.1 255.255.255.0
+     ip add 10.11.11.1 255.255.255.0
 	 no shutdown
    Int Gi 0/0/1
      description OUTSIDE
-	 ip add 200.0.0._ 255.255.255.0
+	 ip add 200.0.0.11 255.255.255.0
 	 no shutdown
    Int Loopback 0
      description VIRTUALIP
-	 ip add _.0.0.1 255.255.255.255
+	 ip add 11.0.0.1 255.255.255.255
  end
 
  
  !!! EDGE route NOT dikit to ClassMate:
- ip route 10.11.0.0 255.255.0.0 10.M.M.4
+ ip route 10.11.0.0 255.255.0.0 10.11.11.4
  ip route 10.12.0.0 255.255.0.0 200.0.0.12
  ip route 10.21.0.0 255.255.0.0 200.0.0.21
  ip route 10.22.0.0 255.255.0.0 200.0.0.22
@@ -294,12 +294,12 @@ config t
 @corebaba:
 CONFIG T
 ip routing
-ip route 0.0.0.0  0.0.0.0  10.m.m.1
+ip route 0.0.0.0  0.0.0.0  10.11.11.1
 
 @CUCM:
 CONFIG T
 ip routing
- ip route 0.0.0.0  0.0.0.0  10.m.100.4
+ ip route 0.0.0.0  0.0.0.0  10.11.100.4
  
  
 
